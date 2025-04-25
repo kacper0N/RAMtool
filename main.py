@@ -248,8 +248,8 @@ class LauncherWindow(QMainWindow):
         try:
             data = re.sub(r"\s+", "", open(input_path, "r", encoding="utf-8").read())
             pattern = r"FOUNDPOSSIBLE(128|256)-BITKEYATBYTE([0-9A-Fa-f]+)KEY"
-            pairs = [(m.group(1), m.group(2)) for m in re.finditer(pattern, data)]
-            lines = [f"{size},{offset}" for size, offset in pairs]
+            pairs = [(m.group(2), m.group(1)) for m in re.finditer(pattern, data)]
+            lines = [f"{offset},{size}" for offset, size in pairs]
             with open(out_path, "w", encoding="utf-8") as f:
                 f.write("\n".join(lines))
         except Exception as e:
@@ -260,6 +260,7 @@ class LauncherWindow(QMainWindow):
             data = re.sub(r"\s+", "", open(input_path, "r", encoding="utf-8").read())
             pattern = r"FOUNDPRIVATEKEYAT([0-9A-Fa-f]+)version"
             vals = [m.group(1) for m in re.finditer(pattern, data)]
+            vals = [f"{offset},0" for offset in vals]
             with open(out_path, "w", encoding="utf-8") as f:
                 f.write("\n".join(vals))
         except Exception as e:
@@ -270,6 +271,7 @@ class LauncherWindow(QMainWindow):
             data = re.sub(r"\s+", "", open(input_path, encoding="utf-8").read())
             pattern = r"Twofishkeyfoundat([0-9A-Fa-f]+)\."
             lst = [m.group(1) for m in re.finditer(pattern, data)]
+            lst = [f"{offset},0" for offset in lst]
             with open(out_path, "w", encoding="utf-8") as f:
                 f.write("\n".join(lst))
         except Exception as e:
@@ -280,6 +282,7 @@ class LauncherWindow(QMainWindow):
             data = re.sub(r"\s+", "", open(input_path, encoding="utf-8").read())
             pattern = r"Found\(probable\)SERPENTkeyatoffset([0-9A-Fa-f]+):"
             lst = [m.group(1) for m in re.finditer(pattern, data)]
+            lst = [f"{offset},0" for offset in lst]
             with open(out_path, "w", encoding="utf-8") as f:
                 f.write("\n".join(lst))
         except Exception as e:
